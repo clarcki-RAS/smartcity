@@ -113,7 +113,7 @@ export default function Home() {
       priority
       className="object-cover brightness-75"
     />
-    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+    <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
   </div>
 
   <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
@@ -184,7 +184,7 @@ export default function Home() {
 
 
 {/* CTA */}
-<section className="w-full flex justify-center px-6  py-20 bg-gradient-to-b from-black to-black/95 text-white">
+<section className="w-full flex justify-center px-6  py-20 bg-linear-to-b from-black to-black/95 text-white">
   <div className="max-w-4xl w-full">
     <AnimatedSection compact>
       <h2 className="text-2xl md:text-3xl font-bold mb-6">
