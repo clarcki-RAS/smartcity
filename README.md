@@ -83,7 +83,21 @@ mkcert -install
 mkcert localhost 127.0.0.1 ::1
 npm run dev
 ---
+## Aperçu
 
+### Application Mobile
+<div align="center">
+  <img src="assets/Login.png" width="250" alt="Login"/>
+  <img src="assets/Admin-Dashboard.png" width="250" alt="Page Admin"/>
+  <img src="assets/Ajout signalement.png" width="250" alt="formulaire de signalement"/>
+  <img src="assets/Gestion des utilisateurs.png" width="250" alt="Gestion-utilisateur"/>
+  <img src="assets/signalement avec filtre .png" width="250" alt="filtre"/>
+  <img src="assets/signalement sans filtre .png" width="250" alt="signalement"/>
+  <img src="assets/statistique .png" width="250" alt="Dashboard"/>
+
+
+### Dashboard Web
+![Dashboard fréquentation](assets/dashboard-web.png)
 
 ## Project Structure
 
