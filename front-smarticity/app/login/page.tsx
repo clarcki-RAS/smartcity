@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react"
 
 
 export default async function LoginPage() {
-  await new Promise((resolve) => setTimeout(resolve, 1500))
+  //(loading test) await new Promise((resolve) => setTimeout(resolve, 1500))
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
