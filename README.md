@@ -1,44 +1,43 @@
-# Smart City – Urban Incident Management Platform
+# 🏙️ Smart City – Urban Incident Management Platform
+
+## 📖 Overview
+
+Smart City est une application web conçue pour permettre aux citoyens de signaler rapidement des incidents urbains (routes dégradées, éclairage public défectueux, infrastructures endommagées, etc.) et aux administrateurs de centraliser leur traitement via un tableau de bord moderne, sécurisé et intuitif.
+
+L’objectif est d’améliorer la réactivité des services urbains grâce à une plateforme numérique accessible et efficace.
 
 ---
 
-## Overview
+# 🚀 Features
 
-Smart City est une application web conçue pour permettre aux citoyens de signaler rapidement des incidents urbains (routes dégradées, éclairage public défectueux, infrastructures endommagées, etc.) et aux administrateurs de centraliser leur traitement via un tableau de bord de supervision.
-
-L’objectif est d’améliorer la réactivité des services urbains grâce à une plateforme numérique moderne, sécurisée et intuitive.
-
----
-
-## Features
-
-### Citizen Side
-- Signalement d’incidents
-- Ajout de description détaillée
+## 👥 Citizen Side
+- Signalement d’incidents urbains
+- Ajout de descriptions détaillées
 - Localisation des incidents
-- Consultation du suivi de traitement
+- Consultation du suivi des signalements
 - Interface responsive
 
-### Administration Dashboard
+## 🛠️ Administration Dashboard
 - Gestion centralisée des signalements
 - Mise à jour des incidents
 - Tableau de bord analytique
 - Suivi de résolution
 
-### Priority Levels
+## ⚡ Priority Levels
+
 Chaque incident possède un niveau de priorité :
 
-- **Bas**
-- **Moyen**
-- **Élevé**
-- **Critique**
+- 🟢 Bas
+- 🟡 Moyen
+- 🟠 Élevé
+- 🔴 Critique
 
 ---
 
-## Tech Stack
+# 🧰 Tech Stack
 
 | Layer | Technologies |
-|-------|-------------|
+|-------|---------------|
 | Frontend | Next.js, TailwindCSS, ShadCN UI |
 | Backend | Django, Django REST Framework |
 | Database | PostgreSQL (Aiven Cloud) |
@@ -46,60 +45,99 @@ Chaque incident possède un niveau de priorité :
 
 ---
 
-## installation
+# 📦 Installation
+
+## 🔧 Backend
+
+```bash
 cd backend
 
 # Create virtual environment
 python -m venv venv
+```
 
-# Activate environment
-# Linux / macOS
+### Activate environment
+
+#### Linux / macOS
+```bash
 source venv/bin/activate
+```
 
-# Windows
+#### Windows
+```bash
 venv\Scripts\activate
+```
 
-# Install dependencies
+### Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-# Configure environment variables
+### Configure environment variables
+
+```bash
 cp .env.example .env
+```
 
-# Apply migrations
+### Apply migrations
+
+```bash
 python manage.py migrate
+```
 
-# Run server
+### Run backend server
+
+```bash
 python manage.py runserver
+```
 
-## frontend
+---
+
+## 💻 Frontend
+
+```bash
 cd frontend
+```
 
-# Install dependencies
+### Install dependencies
+
+```bash
 npm install
+```
 
-Configure Local HTTPS
+### Configure Local HTTPS
 
+```bash
 mkcert -install
 mkcert localhost 127.0.0.1 ::1
+```
+
+### Run frontend server
+
+```bash
 npm run dev
+```
+
 ---
-## Aperçu
 
-### Application Mobile
+# 📸 Application Preview
+
 <div align="center">
-  <img src="assets/Login.png" width="250" alt="Login"/>
-  <img src="assets/Admin-Dashboard.png" width="250" alt="Page Admin"/>
-  <img src="assets/Ajout signalement.png" width="250" alt="formulaire de signalement"/>
-  <img src="assets/Gestion des utilisateurs.png" width="250" alt="Gestion-utilisateur"/>
-  <img src="assets/signalement avec filtre .png" width="250" alt="filtre"/>
-  <img src="assets/signalement sans filtre .png" width="250" alt="signalement"/>
-  <img src="assets/statistique .png" width="250" alt="Dashboard"/>
 
+<img src="assets/Login.png" width="250" alt="Login"/>
+<img src="assets/Admin-Dashboard.png" width="250" alt="Admin Dashboard"/>
+<img src="assets/Ajout signalement.png" width="250" alt="Ajout signalement"/>
+<img src="assets/Gestion des utilisateurs.png" width="250" alt="Gestion utilisateurs"/>
+<img src="assets/signalement avec filtre .png" width="250" alt="Signalement avec filtre"/>
+<img src="assets/signalement sans filtre .png" width="250" alt="Signalement sans filtre"/>
+<img src="assets/statistique .png" width="250" alt="Dashboard"/>
 
-### Dashboard Web
-![Dashboard fréquentation](assets/dashboard-web.png)
+</div>
 
-## Project Structure
+---
+
+# 📁 Project Structure
 
 ```bash
 smart-city/
@@ -109,10 +147,10 @@ smart-city/
 │   ├── requirements.txt
 │   └── ...
 │
-├── front-smarticity/
+├── front-smartcity/
 │   ├── app/
 │   ├── components/
 │   └── ...
 │
 └── README.md
-
+```
