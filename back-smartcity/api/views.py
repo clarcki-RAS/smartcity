@@ -1,17 +1,26 @@
 from rest_framework import viewsets,filters
-from .serializer import UserSerializer,SignalementSerializer,ImageSerializer,MlModelSerializer,PredictionSerializer,NotificationSerializer
+from .serializer import UserSerializer,SignalementSerializer,ImageSerializer,MlModelSerializer,PredictionSerializer,NotificationSerializer,SmartCityTokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from .models import Image,Signalement,MlModel,Prediction,Notification
 from . import permission as custom_permissions
 from .mixin import UserQuerysetMixin
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
 User=get_user_model()
+
+class SmartCityTokenObtainPairView(TokenObtainPairView):
+    serializer_class = SmartCityTokenObtainPairSerializer
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
     serializer_class=UserSerializer
-    permission_classes=[custom_permissions.AnonymousOrSuperuserPostOnly,custom_permissions.OnlySuperuserGet,IsAuthenticated]
     filter_backends=[filters.SearchFilter]
     search_fields = ['id', 'username', 'email','first_name','last_name','date_joined','role',]
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [custom_permissions.OnlySuperuserGet(), IsAuthenticated()]
 
 
 class SignalementViewSet(UserQuerysetMixin,viewsets.ModelViewSet):
@@ -37,4 +46,5 @@ class PredictionViewSet(viewsets.ModelViewSet):
 
 class NotificationViewSet(viewsets.ModelViewSet,UserQuerysetMixin):
     queryset=Notification.objects.all()
+    user_lookup_field = 'destinataire'
     serializer_class= NotificationSerializer

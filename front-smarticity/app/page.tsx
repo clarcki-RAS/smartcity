@@ -5,17 +5,13 @@
 import Image from "next/image";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef,useState } from "react";
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 
 
 
-// Simple fade + slide animations
-const sectionBase =
-  "min-h-screen snap-start flex flex-col items-center justify-center px-6 text-center transition-opacity duration-700 ease-out";
-
-function useReveal(ref: any) {
+function useReveal(ref: React.RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -96,7 +92,6 @@ function Navbar() {
 
 
 export default function Home() {
-  const [active, setActive] = useState("ville");
   return (
     <><Navbar /> 
     <main className="w-full scroll-smooth">
@@ -252,4 +247,3 @@ export default function Home() {
     </>
   );
 }
-

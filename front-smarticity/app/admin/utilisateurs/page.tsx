@@ -1,89 +1,63 @@
-'use client';
+"use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-
-import { CheckCircle, XCircle, Trash2, Shield , User } from "lucide-react";
-
-// Import des utilisateurs statiques
-import { users } from "@/lib/mock/users";
+import { Shield, User } from "lucide-react";
+import { ApiUser, listUsers } from "@/lib/api";
 
 export default function UsersPage() {
+  const [users, setUsers] = useState<ApiUser[]>([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    listUsers()
+      .then(setUsers)
+      .catch((err) => setError(err instanceof Error ? err.message : "Chargement impossible."))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   return (
-    <div className="ml-[250px] space-y-6 p-4">
+    <div className="space-y-6 pl-64">
+      <div className="mb-4">
+        <h1 className="text-2xl font-semibold text-slate-900">Gestion des utilisateurs</h1>
+        <p className="text-sm text-slate-500 mt-1">Administration des comptes SmartCity</p>
+      </div>
 
-  {/* Header */}
-  <div className="mb-4">
-    <h1 className="text-2xl font-semibold text-slate-900">Gestion des utilisateurs</h1>
-    <p className="text-sm text-slate-500 mt-1">Administration des comptes SmartCity</p>
-  </div>
+      {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 p-3 rounded-md">{error}</p>}
+      {isLoading && <p className="text-sm text-slate-500">Chargement des utilisateurs...</p>}
 
-  {/* Table card */}
-  <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
-    <Table>
-      <TableHeader className="bg-gray-50">
-        <TableRow>
-          <TableHead>Utilisateur</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Rôle</TableHead>
-          <TableHead>Statut</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
+      <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
+        <Table>
+          <TableHeader className="bg-gray-50">
+            <TableRow>
+              <TableHead>Utilisateur</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Rôle</TableHead>
+              <TableHead>Date de création</TableHead>
+            </TableRow>
+          </TableHeader>
 
-      <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id} className="hover:bg-gray-50">
-            <TableCell className="font-medium py-3">{user.name}</TableCell>
-            <TableCell className="text-slate-600 py-3">{user.email}</TableCell>
-            <TableCell className="py-3">
-              <Badge variant="secondary" className="gap-1 px-2 py-1 flex items-center">
-                {user.role === "Civil" ? <User className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
-                {user.role}
-              </Badge>
-            </TableCell>
-            <TableCell className="py-3">
-              {user.status === "active" ? (
-                <Badge className="bg-green-100 text-green-700 px-2 py-1">Actif</Badge>
-              ) : (
-                <Badge variant="outline" className="text-slate-500 px-2 py-1">Inactif</Badge>
-              )}
-            </TableCell>
-            <TableCell className="text-right py-3 flex justify-end gap-2">
-              {user.status === "active" ? (
-                <Button size="sm" variant="outline" disabled className="gap-1">
-                  <CheckCircle className="h-4 w-4" /> Actif
-                </Button>
-              ) : (
-                <Button size="sm" variant="outline" className="gap-1 px-3">
-                  <XCircle className="h-4 w-4" /> Activer
-                </Button>
-              )}
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-red-600 hover:bg-red-50"
-                disabled={user.status === "active"}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </div>
-
-</div>
-
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id} className="hover:bg-gray-50">
+                <TableCell className="font-medium py-3">
+                  {[user.first_name, user.last_name].filter(Boolean).join(" ") || user.username}
+                </TableCell>
+                <TableCell className="text-slate-600 py-3">{user.email}</TableCell>
+                <TableCell className="py-3">
+                  <Badge variant="secondary" className="gap-1 px-2 py-1 flex items-center w-fit">
+                    {user.role === "CIVIL" ? <User className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
+                    {user.role === "CIVIL" ? "Civil" : "Admin"}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-slate-600 py-3">{new Date(user.date_joined).toLocaleString("fr-FR")}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 }

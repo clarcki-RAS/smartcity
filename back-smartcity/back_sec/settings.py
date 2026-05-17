@@ -10,12 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
-import dj_database_url
 import os
-from dotenv import load_dotenv
 from datetime import timedelta
-DEBUG = os.environ.get("DEBUG", "FALSE") == "TRUE"
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,6 +62,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "https://127.0.0.1:3000",
+    "https://localhost:3000",
 ]   
 
 CORS_ALLOW_CREDENTIALS = True
@@ -90,12 +92,30 @@ WSGI_APPLICATION = 'back_sec.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Configuration Aiven mise en pause pour le développement local.
+# Pour la réactiver, décommenter ce bloc et remettre l'import dj_database_url.
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         env="DATABASE_URL",
+#         conn_max_age=600,
+#         ssl_require=True  # AIVEN REQUIRE SSL
+#     )
+# }
+
+DB_ENGINES = {
+    "postgres": "django.db.backends.postgresql",
+    "postgresql": "django.db.backends.postgresql",
+}
+
 DATABASES = {
-    "default": dj_database_url.config(
-        env="DATABASE_URL",
-        conn_max_age=600,
-        ssl_require=True  # AIVEN REQUIRE SSL
-    )
+    "default": {
+        "ENGINE": DB_ENGINES.get(os.getenv("DB_DIALECT", "postgres"), "django.db.backends.postgresql"),
+        "NAME": os.getenv("DB_NAME", "smartcity"),
+        "USER": os.getenv("DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "121209"),
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("DB_PORT", "5432"),
+    }
 }
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -161,5 +181,3 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),#dev
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7)
 }
-
-

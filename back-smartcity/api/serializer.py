@@ -1,8 +1,22 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Signalement,Image,MlModel,Prediction,Notification
 
 User = get_user_model()
+
+class SmartCityTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['role'] = user.role
+        token['is_superuser'] = user.is_superuser
+        token['username'] = user.username
+        token['email'] = user.email
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+        return token
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -33,15 +47,18 @@ class ImageSerializer(serializers.HyperlinkedModelSerializer):
 class SignalementSerializer(serializers.ModelSerializer):
     images = serializers.ListField(
         child=serializers.ImageField(),
-        write_only=True
+        write_only=True,
+        required=False
     )
     uploaded_images = ImageSerializer(source='images', many=True, read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Signalement
-        fields = ['url', 'description', 'status', 'created_at', 'images', 'uploaded_images']
+        fields = ['id', 'description', 'localisation', 'status', 'created_at', 'user', 'images', 'uploaded_images']
+        read_only_fields = ['id', 'created_at', 'user']
 
     def create(self, validated_data):
-        images = validated_data.pop('images')
+        images = validated_data.pop('images', [])
         user = self.context['request'].user
         signalement = Signalement.objects.create(user=user, **validated_data)
         for img in images:
@@ -69,7 +86,7 @@ class PredictionSerializer(serializers.HyperlinkedModelSerializer):
 
 class NotificationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model: Notification
+        model = Notification
         fields= '__all__'
         # extra_kwargs={
         #     'destinataire':{
